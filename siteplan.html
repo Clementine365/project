@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Site Plan - My Personal Schedule Planner</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="siteplan.css">
+  <meta name="theme-color" content="#2a7de1">
+</head>
+<body>
+
+  <header>
+    <div class="logo" aria-hidden="true">PSP</div>
+    <h1>My Personal Schedule Planner</h1>
+    <p class="tagline">A simple, interactive planner to organize daily tasks, priorities, reminders, and notes.</p>
+  </header>
+
+  <nav class="toc" aria-label="Document sections">
+    <strong>Contents:</strong>
+    <a href="#name">Site Name</a> |
+    <a href="#purpose">Site Purpose</a> |
+    <a href="#scenarios">Scenarios</a> |
+    <a href="#colors">Color Schema</a> |
+    <a href="#typography">Typography</a> |
+    <a href="#wireframe">Wireframe</a> |
+    <a href="#requirements">Project Requirements</a> |
+    <a href="#implementation">Implementation Plan</a>
+  </nav>
+
+  <main>
+    <section id="name">
+      <h2>Site Name</h2>
+      <p><strong>Personal Schedule Planner (PSP)</strong></p>
+      <p><em>Reason:</em> This name is short, and can easly tell the users what the app is for.</p>
+    </section>
+
+    <section id="purpose">
+      <h2>Site Purpose</h2>
+      <p>The purpose of this website is to provide a simple, helpful and interactive app for managing daily schedules.
+         the users can:</p>
+      <ul>
+        <li>Create and manage daily tasks.</li>
+        <li>Set reminders for important events</li>
+        <li>Record notes for quick reference</li>
+        <li>Review weekly schedules and progress</li>
+      </ul>
+    </section>
+
+    <section id="scenarios">
+      <h2>Scenarios</h2>
+      <ul>
+        <li><strong>How can I keep track of my daily tasks?</strong><br> Users can add tasks to their planner, edit,and check them off when completed.</li>
+        <li><strong>Can I view my weekly overview?</strong><br> A weekly planner page provides a calendar-like layout.</li>
+        <li><strong>What if I need to save notes for later?</strong><br> A notes page allows saving and storing important notes using local storage.</li>
+      </ul>
+    </section>
+
+    <section id="colors">
+      <h2>Color Schema</h2>
+      <p><strong>Primary Color:</strong> #2a7de1 (blue) – used for headers and navigation.<br>
+      <strong>Secondary Color:</strong> #f4f6f9 (light gray) – used as background.<br>
+      <strong>Accent Color:</strong> #ff9800 (orange) – used for highlights, buttons, and alerts.</p>
+    </section>
+
+    <section id="typography">
+      <h2>Typography</h2>
+      <p><strong>Headings:</strong> Poppins (sans-serif, bold)<br>
+      <strong>Body Text:</strong> Roboto (sans-serif, regular)</p>
+    </section>
+
+    <section id="wireframe">
+      <h2>Wireframe</h2>
+      <p><strong>Home Page Layout:</strong></p>
+      <ul>
+        <li>Header with logo and site name (psp)</li>
+        <li>Navigation bar</li>
+        <li>Main section with intro text and quick links</li>
+        <li>Footer with contact and copyright</li>
+      </ul>
+      <p><strong>Secondary Pages:</strong></p>
+      <ul>
+        <li>Week Planner – the app displays weekly view with tasks</li>
+        <li>Notes Page – simple text input and saved notes list</li>
+      </ul>
+    </section>
+
+    <section id="requirements">
+      <h2>Project Requirements</h2>
+      <p>This project will meet the following functional and developmental specifications:</p>
+      <ul>
+        <li>Hosted on GitHub Pages</li>
+        <li>At least three pages with consistent navigation</li>
+        <li>Accessible, visually appealing, responsive design</li>
+        <li>Valid HTML and CSS</li>
+        <li>Optimized images with lazy loading</li>
+        <li>HTML form implemented</li>
+        <li>Dynamic features via JavaScript:
+          <ul>
+            <li>DOM interaction (select, modify, events)</li>
+            <li>Conditional branching</li>
+            <li>Objects, arrays, and methods</li>
+            <li>Template literals for output</li>
+            <li>Use of <code>localStorage</code></li>
+          </ul>
+        </li>
+        <li>No grammar or spelling issues</li>
+      </ul>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation Plan</h2>
+      <ol>
+        
+        <li>Week 4: Create basic HTML structure and CSS styles,
+            Add navigation and 
+            responsive layout and Implement form and JavaScript interactivity
+            </li>
+        <li>Week 5:Connect localStorage and test dynamic features,
+            Implement form and JavaScript interactivity, Optimize, and validate. </li>
+            <li>Week 6:Final, publish on GitHub Pages.
+            
+            </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>©<span id="currentyear"></span> Clementine , Netherlands</p>
+    <p id="lastModified"></p>
+  </footer>
+
+  <script>
+    // Insert current year
+    document.getElementById("currentyear").textContent = new Date().getFullYear();
+
+    // Insert last modified date
+    document.getElementById("lastModified").textContent = "Last modified: " + document.lastModified;
+  </script>
+</body>
+</html>

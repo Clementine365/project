@@ -1,0 +1,89 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Layout fix for sticky footer */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+/* Header */
+header {
+  background: #2a7de1;
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+header .logo {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+header .tagline {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Navigation */
+nav.toc {
+  background: #fff;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+nav.toc a {
+  margin: 0 0.5rem;
+  text-decoration: none;
+  color: #2a7de1;
+  font-weight: 500;
+}
+
+nav.toc a:hover {
+  text-decoration: underline;
+}
+
+/* Main content */
+main {
+  flex: 1; /* pushes footer down */
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+main h2 {
+  font-family: 'Poppins', sans-serif;
+  margin: 1.5rem 0 0.5rem;
+  color: #2a7de1;
+}
+
+main p, main li {
+  margin-bottom: 0.75rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  color: #666;
+  font-size: 0.9rem;
+}
