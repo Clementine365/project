@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSP</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+  <header>
+    <h1>Personal weekly Schedule Planner</h1>
+
+    <!-- Lazy-loaded top-right image -->
+    <img src="images/planning.jpeg" alt="Decorative" class="top-right-img" loading="lazy">
+<div class="page-container"></div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="weekly-planner.html">Week Planned</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Welcome to PSP</h2>
+      <p>This app helps you plan your weekly activities, manage, and write down quick notes about
+         certain activities.
+          all in one place!</p>
+    </section>
+
+    <section class="task-form">
+      <h2>Add a Task</h2>
+      <form id="taskForm">
+        <div class="form-group">
+          <label for="taskName">Task Name:</label>
+          <input type="text" id="taskName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="taskDay">Day:</label>
+          <select id="taskDay" required>
+            <option value="">Select a Day</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="taskTime">Start Time:</label>
+          <input type="time" id="taskTime" required>
+        </div>
+
+        <div class="form-group">
+          <label for="taskEndTime">End Time:</label>
+          <input type="time" id="taskEndTime" required>
+        </div>
+
+        <div class="form-group">
+          <label for="taskDetails">Details:</label>
+          <textarea id="taskDetails" placeholder="Add any extra notes..."></textarea>
+        </div>
+
+        <button type="submit" class="btn">Add Task</button>
+      </form>
+      <div id="message"></div>
+    </section>
+
+    <section class="task-list">
+      <h2>Your Tasks</h2>
+      <ul id="taskList"></ul>
+    </section>
+
+    <section class="day-overview">
+      <h2>Weekly Overview</h2>
+      <div id="dayOverview" class="week-grid">
+        <!-- Dynamically filled with days, dates, star rating, tasks -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>©<span id="currentyear"></span> Clementine, Netherlands</p>
+    <p id="lastModified"></p>
+  </footer>
+</div>
+  <button id="backToTop" title="Back to top">↑</button>
+
+  <script src="scripts/script.js"></script>
+  <script>
+    // Set current year
+    const currentYearSpan = document.getElementById("currentyear");
+    if(currentYearSpan) {
+      currentYearSpan.textContent = new Date().getFullYear();
+    }
+
+    // Set last modified date
+    const lastModifiedP = document.getElementById("lastModified");
+    if(lastModifiedP) {
+      lastModifiedP.textContent = `Last Modified: ${document.lastModified}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>planned- PSP</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    
+  <header>
+    <h1>Weekly Planner</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="weekly-planner.html" class="active">Week Planned</a>
+      <a href="notes.html">Notes</a>
+    </nav>
+  </header>
+<div class="page-container"></div>
+  <main>
+    <!-- Feedback Message -->
+    <div id="message" style="margin-bottom: 1rem; font-weight: bold;"></div>
+
+    <h2>Current Tasks</h2>
+    <p>Tasks that are scheduled for today or in the future for use.
+         You can edit if anything changed or delete them.</p>
+    <div id="currentTasks" class="week-grid"></div>
+
+    <h2>Past Activities</h2>
+    <p>Tasks that have already passed or finished. 
+        You can leave them if you still wants them
+        as reference or delete them.</p>
+    <div id="pastTasks" class="week-grid"></div>
+  </main>
+
+  <footer>
+    <p>©<span id="currentyear"></span> Clementine, Netherlands</p>
+  <p id="lastModified"></p>
+  </footer>
+</div>
+  <button id="backToTop" title="Back to top">↑</button>
+
+  <script src="scripts/script.js"></script>
+  <script >
+  // Set current year
+const currentYearSpan = document.getElementById("currentyear");
+if(currentYearSpan) {
+  currentYearSpan.textContent = new Date().getFullYear();
+}
+
+// Set last modified date
+const lastModifiedP = document.getElementById("lastModified");
+if(lastModifiedP) {
+  lastModifiedP.textContent = `Last Modified: ${document.lastModified}`;
+}
+</script>
+</body>
+</html>
