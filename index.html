@@ -3,18 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSP</title>
+  <title>weekly planner</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto&display=swap" rel="stylesheet">
+
+  
+
 </head>
 <body>
     
   <header>
-    <h1>Personal weekly Schedule Planner</h1>
+    <h1>Personal Weekly Schedule Planner</h1>
 
     <!-- Lazy-loaded top-right image -->
     <img src="images/planning.jpeg" alt="Decorative" class="top-right-img" loading="lazy">
-<div class="page-container"></div>
+
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="weekly-planner.html">Week Planned</a>
@@ -25,9 +28,9 @@
   <main>
     <section class="intro">
       <h2>Welcome to PSP</h2>
-      <p>This app helps you plan your weekly activities, manage, and write down quick notes about
-         certain activities.
-          all in one place!</p>
+      <p>This app helps you plan your weekly activities,
+         manage, and write down quick notes about certain activities.
+         do this all in one place!</p>
     </section>
 
     <section class="task-form">
@@ -52,6 +55,11 @@
           </select>
         </div>
 
+        <!-- date input -->
+<div class="form-group">
+  <label for="taskDate">Date:</label>
+  <input type="date" id="taskDate" required>
+</div>
         <div class="form-group">
           <label for="taskTime">Start Time:</label>
           <input type="time" id="taskTime" required>
@@ -89,7 +97,7 @@
     <p>©<span id="currentyear"></span> Clementine, Netherlands</p>
     <p id="lastModified"></p>
   </footer>
-</div>
+
   <button id="backToTop" title="Back to top">↑</button>
 
   <script src="scripts/script.js"></script>
@@ -108,3 +116,15 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

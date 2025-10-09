@@ -2,7 +2,6 @@
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("taskList");
 const message = document.getElementById("message");
-const weekView = document.getElementById("weekView");
 const currentTasksDiv = document.getElementById("currentTasks");
 const pastTasksDiv = document.getElementById("pastTasks");
 const dayOverview = document.getElementById("dayOverview");
@@ -16,11 +15,12 @@ function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   if (!taskList) return;
   taskList.innerHTML = "";
+  tasks.sort((a, b) => new Date(a.date) - new Date(b.date)); // sort by date
   tasks.forEach(task => {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${task.day}</strong> - ${task.time} to ${task.endTime}: ${task.title}
-      <button onclick="editTask('${task.day}', '${task.time}')">Edit</button>
-      <button onclick="deleteTask('${task.day}', '${task.time}')">Delete</button>`;
+    li.innerHTML = `<strong>${task.date}</strong> (${task.day}) - ${task.time} to ${task.endTime}: ${task.title}
+      <button onclick="editTask('${task.date}', '${task.time}')">Edit</button>
+      <button onclick="deleteTask('${task.date}', '${task.time}')">Delete</button>`;
     taskList.appendChild(li);
   });
 }
@@ -31,24 +31,38 @@ if (taskForm) {
     e.preventDefault();
     const title = taskForm.taskName.value.trim();
     const day = taskForm.taskDay.value;
+    const date = taskForm.taskDate.value;
     const time = taskForm.taskTime.value;
     const endTime = taskForm.taskEndTime.value;
     const details = taskForm.taskDetails.value.trim();
 
-    if (!title || !day || !time || !endTime) return;
+    if (!title || !day || !date || !time || !endTime) return;
 
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const duplicate = tasks.some(t => t.day === day && (
-      (time >= t.time && time < t.endTime) || (endTime > t.time && endTime <= t.endTime)
-    ));
+    const taskStart = new Date(`${date}T${time}`);
+    const now = new Date();
 
-    if (duplicate) {
-      message.textContent = "⚠️ This time slot is already booked.";
+    if (taskStart < now) {
+      message.textContent = "⚠️ You can’t schedule a task in the past.";
       message.style.color = "red";
       return;
     }
 
-    tasks.push({ title, day, time, endTime, details, completed: false });
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    const duplicate = tasks.some(t =>
+      t.date === date && (
+        (time >= t.time && time < t.endTime) ||
+        (endTime > t.time && endTime <= t.endTime)
+      )
+    );
+
+    if (duplicate) {
+      message.textContent = "⚠️ This time slot is already booked for that day.";
+      message.style.color = "red";
+      return;
+    }
+
+    tasks.push({ title, day, date, time, endTime, details, completed: false });
     localStorage.setItem("tasks", JSON.stringify(tasks));
     message.textContent = "✅ Task added successfully!";
     message.style.color = "green";
@@ -60,9 +74,9 @@ if (taskForm) {
 }
 
 // ======== DELETE TASK ========
-function deleteTask(day, time) {
+function deleteTask(date, time) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks = tasks.filter(t => !(t.day === day && t.time === time));
+  tasks = tasks.filter(t => !(t.date === date && t.time === time));
   localStorage.setItem("tasks", JSON.stringify(tasks));
   loadTasks();
   renderWeekView();
@@ -70,9 +84,9 @@ function deleteTask(day, time) {
 }
 
 // ======== EDIT TASK ========
-function editTask(day, time) {
+function editTask(date, time) {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  const index = tasks.findIndex(t => t.day === day && t.time === time);
+  const index = tasks.findIndex(t => t.date === date && t.time === time);
   if (index === -1) return;
 
   const task = tasks[index];
@@ -80,11 +94,19 @@ function editTask(day, time) {
   const newTime = prompt("Edit Start Time (HH:MM):", task.time) || task.time;
   const newEndTime = prompt("Edit End Time (HH:MM):", task.endTime) || task.endTime;
 
-  const duplicate = tasks.some((t, i) => i !== index && t.day === day && (
-    (newTime >= t.time && newTime < t.endTime) || (newEndTime > t.time && newEndTime <= t.endTime)
+  const editDate = new Date(`${task.date}T${newTime}`);
+  const now = new Date();
+  if (editDate < now) {
+    alert("⚠️ You cannot move a task to the past.");
+    return;
+  }
+
+  const duplicate = tasks.some((t, i) => i !== index && t.date === task.date && (
+    (newTime >= t.time && newTime < t.endTime) ||
+    (newEndTime > t.time && newEndTime <= t.endTime)
   ));
   if (duplicate) {
-    alert("⚠️ Time slot already booked.");
+    alert("⚠️ Time slot already booked for that day.");
     return;
   }
 
@@ -103,81 +125,78 @@ function renderWeekView() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   const now = new Date();
 
-  if(currentTasksDiv) currentTasksDiv.innerHTML = "";
-  if(pastTasksDiv) pastTasksDiv.innerHTML = "";
+  if (currentTasksDiv) currentTasksDiv.innerHTML = "";
+  if (pastTasksDiv) pastTasksDiv.innerHTML = "";
+
+  tasks.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
 
   tasks.forEach(task => {
-    const taskDate = new Date();
-    const [hours, minutes] = task.time.split(":");
-    taskDate.setHours(hours, minutes, 0, 0);
+    const start = new Date(`${task.date}T${task.time}`);
+    const end = new Date(`${task.date}T${task.endTime}`);
 
     const li = document.createElement("li");
-    li.textContent = `${task.day} ${task.time}-${task.endTime}: ${task.title}`;
+    li.textContent = `${task.date} (${task.day}) ${task.time}-${task.endTime}: ${task.title}`;
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
-    editBtn.onclick = () => editTask(task.day, task.time);
+    editBtn.onclick = () => editTask(task.date, task.time);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.onclick = () => deleteTask(task.day, task.time);
+    deleteBtn.onclick = () => deleteTask(task.date, task.time);
 
-    if(taskDate >= now) {
+    if (end >= now) {
       li.appendChild(editBtn);
       li.appendChild(deleteBtn);
-      if(currentTasksDiv) currentTasksDiv.appendChild(li);
+      currentTasksDiv?.appendChild(li);
     } else {
       li.appendChild(deleteBtn);
-      if(pastTasksDiv) pastTasksDiv.appendChild(li);
+      pastTasksDiv?.appendChild(li);
     }
   });
 }
 
-// ======== DAY OVERVIEW WITH ACCURATE DATES & STARS ========
+// ======== UPDATED DAY OVERVIEW (shows all 7 days) ========
 function renderDayOverview() {
   if (!dayOverview) return;
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const today = new Date();
-  const currentWeekDay = today.getDay(); // Sunday=0
-
   dayOverview.innerHTML = "";
 
-  for(let i=1; i<=7; i++) {
-    const dayIndex = i % 7;
-    const dayName = days[dayIndex];
-    const dayTasks = tasks.filter(t => t.day === dayName);
+  const today = new Date();
 
-    const dayDate = new Date(today);
-    const diff = dayIndex - currentWeekDay;
-    dayDate.setDate(today.getDate() + (diff >= 0 ? diff : 7 + diff));
+  // Generate next 7 days
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(today);
+    day.setDate(today.getDate() + i);
+
+    const dateStr = day.toISOString().split("T")[0];
+    const weekday = day.toLocaleDateString("en-US", { weekday: "long" });
 
     const dayBox = document.createElement("div");
     dayBox.className = "day-card";
 
     const heading = document.createElement("h3");
-    heading.textContent = `${dayName} (${dayDate.getDate()}/${dayDate.getMonth()+1})`;
+    heading.textContent = `${weekday} (${dateStr})`;
     dayBox.appendChild(heading);
 
-    const stars = Math.min(5, Math.ceil(dayTasks.length / 2));
-    const starDiv = document.createElement("div");
-    starDiv.className = "stars";
-    for(let s=0; s<stars; s++) starDiv.innerHTML += "⭐";
-    dayBox.appendChild(starDiv);
+    const dayTasks = tasks.filter(t => t.date === dateStr);
 
-    const ul = document.createElement("ul");
-    if(dayTasks.length === 0){
-      const p = document.createElement("p");
-      p.textContent = "No tasks scheduled.";
-      ul.appendChild(p);
-    } else {
+    if (dayTasks.length > 0) {
+      dayBox.classList.add("busy");
+      const ul = document.createElement("ul");
       dayTasks.forEach(task => {
         const li = document.createElement("li");
-        li.textContent = `${task.time} - ${task.endTime}: ${task.title}`;
+        li.textContent = `${task.time}-${task.endTime}: ${task.title}`;
         ul.appendChild(li);
       });
+      dayBox.appendChild(ul);
+    } else {
+      dayBox.classList.add("free");
+      const p = document.createElement("p");
+      p.textContent = "No tasks — Free day ✅";
+      dayBox.appendChild(p);
     }
-    dayBox.appendChild(ul);
+
     dayOverview.appendChild(dayBox);
   }
 }
@@ -188,14 +207,16 @@ if (notesArea && saveNotes) {
   saveNotes.addEventListener("click", () => {
     localStorage.setItem("userNotes", notesArea.value);
     saveMessage.textContent = "✅ Notes saved successfully!";
-    setTimeout(() => saveMessage.textContent = "", 2000);
+    setTimeout(() => (saveMessage.textContent = ""), 2000);
   });
 }
 
 // ======== BACK TO TOP ========
 if (backToTopBtn) {
-  window.onscroll = () => backToTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
-  backToTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  window.onscroll = () =>
+    (backToTopBtn.style.display = window.scrollY > 200 ? "block" : "none");
+  backToTopBtn.onclick = () =>
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 // ======== INIT ========

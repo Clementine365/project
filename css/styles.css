@@ -12,7 +12,7 @@ body {
 }
 
 .page-container {
-  flex: 1; /* allows footer to stick at bottom */
+  flex: 1; /* this allows footer to stick at bottom */
 }
 
 h1, h2, h3 {
@@ -106,7 +106,7 @@ main {
   background: #e68900;
 }
 
-/* ===== TASK LIST ===== */
+/* =====THE TASK LIST ===== */
 .task-list, .week-grid, #currentTasks, #pastTasks {
   max-width: 900px;
   margin: 1em auto;
@@ -144,7 +144,7 @@ main {
   background: #e68900;
 }
 
-/* ===== DAY OVERVIEW CARDS ===== */
+/* ===== THE DAY OVERVIEW CARDS ===== */
 .week-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -224,4 +224,13 @@ footer {
   .week-grid {
     grid-template-columns: 1fr;
   }
+}
+.busy {
+  background-color: #ffecec;
+  border-left: 4px solid #e44;
+}
+
+.free {
+  background-color: #e8ffe8;
+  border-left: 4px solid #4c4;
 }
